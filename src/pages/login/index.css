@@ -1,0 +1,36 @@
+.fond-bleu {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	background-color: rgb(18, 0, 43);
+}
+
+.login-container {
+	width: 300px;
+	min-height: 300px;
+	margin-top: 3rem;
+	background-color: #fff;
+	color: #000;
+	padding-top: 20px;
+}
+
+.login-title {
+	font-size: 1.5rem;
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
+}
+
+.login-form {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: stretch;
+	gap: 20px;
+	text-align: left;
+}
+
+.login-input {
+	padding: 5px;
+	font-size: 1.2rem;
+}
