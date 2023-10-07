@@ -1,0 +1,27 @@
+.card-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+}
+
+.rond-vert {
+	width: 150px;
+	height: 150px;
+	border: solid 10px rgb(0, 188, 119);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.logo-rond-vert {
+	width: 100px;
+	height: 100px;
+}
+
+.txt {
+	font-size: 1rem;
+	text-align: center;
+}

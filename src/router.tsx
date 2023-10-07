@@ -10,6 +10,7 @@ import { ErrorComponent } from "./components/error";
 import { PageNotFound } from "./pages/not-found";
 import { PageHome } from "./pages/home";
 import { PageLogin } from "./pages/login";
+import { PageUser } from "./pages/user";
 
 const router = createBrowserRouter([
  {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
    {
     path: "/login",
     element: <PageLogin />
+   },
+   {
+    path: "/user",
+    element: <PageUser />
    },
    {
     path: "/404",
