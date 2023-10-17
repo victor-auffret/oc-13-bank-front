@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useRef } from 'react';
+import { FunctionComponent, useCallback, useMemo, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 //
 import type { RootState } from "../../utils/store"
@@ -7,29 +7,42 @@ import { isEmpty } from '../../utils';
 //
 import LogoUser from "../../assets/user.svg"
 import "./index.css"
+import { Api } from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
 }
 // <i className="fa fa-user-circle-o my-icon-user"></i>
 const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
- const savedName = useSelector((state: RootState) => state.savedName)
- const dispatch = useDispatch()
+
+ const navigate = useNavigate()
 
  const userName = useRef<HTMLInputElement>(null)
  const pass = useRef<HTMLInputElement>(null)
- const rememberMe = useRef<HTMLInputElement>(null)
+ const remember = useRef<HTMLInputElement>(null)
+
+ //const [rememberMe, setRememberMe] = useState(false)
+ //const toggleRemember = useCallback(() => setRememberMe(v => !v), [])
 
  const login = useCallback(() => {
-  const name = userName?.current?.value
-  const mdp = pass?.current?.value
-  const remember = Boolean(rememberMe?.current?.value)
-  if (!isEmpty(name) && !isEmpty(mdp)) {
-   console.log({ name, mdp, remember })
+  const name = userName?.current?.value ?? ""
+  const mdp = pass?.current?.value ?? ""
+  const rememberMe = remember?.current?.checked
 
-   if (remember && name) {
+  if (!isEmpty(name) && !isEmpty(mdp)) {
+   console.log({ name, mdp, rememberMe })
+   if (rememberMe && name) {
     // on garde en memoire le dernier utilisateur connecte
-    dispatch(setSavedName(name))
+    console.log("save user")
    }
+   Api.login(name, mdp).then(r => {
+    if ("msg" in r) {
+     console.log("error : ", r.msg)
+    } else {
+     console.log("token : ", r.token)
+     navigate("/user")
+    }
+   })
    // envoie au serveur 
    // recuperation de la reponse
    // redirection vers la page user/profil ou indication des erreurs
@@ -48,7 +61,7 @@ const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
     <div className="login-input-section">
      <label htmlFor="user-name">
       Username
-      <input type="text" name="user-name" id="user-name" className="login-input full-width" value={savedName} ref={userName} />
+      <input type="text" name="user-name" id="user-name" className="login-input full-width" ref={userName} />
      </label>
     </div>
 
@@ -61,7 +74,7 @@ const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
 
 
     <div className="login-input-section txt-left">
-     <input type="checkbox" name="remember-me" id="remember-me" ref={rememberMe} />
+     <input type="checkbox" name="remember-me" id="remember-me" ref={remember} />
      <label htmlFor="remember-me"> Remember me </label>
     </div>
 

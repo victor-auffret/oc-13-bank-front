@@ -1,15 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { savedNameReducer } from "./reducers/savedNameSlice"
-import { userReducer } from './reducers/userSlice';
+import authReducer from "./reducers/authSlice"
 
 const store = configureStore({
  reducer: {
-  savedName: savedNameReducer,
-  user: userReducer
+  auth: authReducer
  },
  devTools: true
 });
 
 export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
 
 export { store }

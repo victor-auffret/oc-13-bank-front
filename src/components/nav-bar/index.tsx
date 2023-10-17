@@ -12,10 +12,10 @@ interface IProps {
 }
 
 const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
- const user = useSelector((state: RootState) => state.user)
+ const user = useSelector((state: RootState) => state.auth.user)
 
  const NavBarDynamique = useMemo(() => {
-  if (isEmpty(user.firstName) || isEmpty(user.lastName)) {
+  if (isEmpty(user)) {
    return (<li>
     <NavLink to={'/login'} className="sign-in">
      <span>
@@ -35,7 +35,7 @@ const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
        <img src={LogoUser} alt="sign-in" className="my-icon-user" />
       </span>
       <span>
-       {user.firstName}
+       {user?.firstName}
       </span>
      </NavLink>
     </li>
@@ -52,7 +52,7 @@ const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
    </>
 
   )
- }, [user.firstName, user.lastName])
+ }, [user, user?.firstName, user?.lastName])
 
  return (<nav>
   <ul className="app-nav-bar">

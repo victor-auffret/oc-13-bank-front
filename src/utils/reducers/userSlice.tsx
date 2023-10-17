@@ -20,7 +20,7 @@ const UserSlice = createSlice({
     return state
    }
    return action.payload
-  },
+  }
  },
 })
 
