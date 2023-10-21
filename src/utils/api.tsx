@@ -1,9 +1,16 @@
+import { myFetch } from "./ajax"
+
 interface IErrorMsg {
- msg: string
+ status: 400 | 401 | number
+ message: string
 }
 
 interface ILoginResponseOk {
- token: string
+ status: 200,
+ message: "User successfully logged in",
+ body: {
+  token: string
+ }
 }
 
 interface IUser {
@@ -18,15 +25,23 @@ type RegisterResponse = IUser | IErrorMsg
 type GetUserResponse = IUser | IErrorMsg
 type SetUserResponse = IUser | IErrorMsg
 
+const baseUrl = "http://localhost:3001"
+const apiVersion = "/api/v1/user"
+const completeUrl = `${baseUrl}${apiVersion}`
+
 class Api {
 
- static async login(username: string, password: string): Promise<LoginResponse> {
-  if (username == password && username == "toto") {
-   return { token: "token" }
-  }
-  return { msg: "mauvais mot de passe" }
+ static async login(email: string, password: string): Promise<LoginResponse> {
+  const url = `${completeUrl}/login`
+  return await myFetch(url, "post", {
+   email,
+   password
+  }).then(r => r.json()).catch(e => {
+   return { msg: e ?? "mauvais mot de passe" }
+  })
  }
 
+ /*
  static async register(email: string, firstName: string, password: string): Promise<RegisterResponse> {
   return { msg: "impossible de creer un compte" }
  }
@@ -38,6 +53,7 @@ class Api {
  static async setUserInfos(token: string, firstName: string, lastName: string): Promise<SetUserResponse> {
   return { msg: "impossible de modifier le profil" }
  }
+ */
 
 }
 

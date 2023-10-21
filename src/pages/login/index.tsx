@@ -35,18 +35,23 @@ const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
     // on garde en memoire le dernier utilisateur connecte
     console.log("save user")
    }
+
    Api.login(name, mdp).then(r => {
-    if ("msg" in r) {
-     console.log("error : ", r.msg)
-    } else {
-     console.log("token : ", r.token)
-     navigate("/user")
+    console.log(r)
+    switch (r.status) {
+     case 200: {
+      console.log("login ok ", r)
+      // modifier authSlice 
+      navigate("/user")
+      break;
+     }
+
+     default: {
+      console.error(r.message)
+      break;
+     }
     }
    })
-   // envoie au serveur 
-   // recuperation de la reponse
-   // redirection vers la page user/profil ou indication des erreurs
-   // 
   }
  }, [])
 
