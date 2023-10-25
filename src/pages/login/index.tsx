@@ -1,19 +1,18 @@
-import { FunctionComponent, useCallback, useMemo, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FunctionComponent, useCallback, useEffect, useRef } from 'react';
 //
-import type { RootState } from "../../utils/store"
-import { setSavedName } from "../../utils/reducers/savedNameSlice"
 import { isEmpty } from '../../utils';
+import { Api, ILoginResponseOk } from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../utils/hooks';
+import { setToken } from '../../utils/reducers/authSlice';
 //
 import LogoUser from "../../assets/user.svg"
 import "./index.css"
-import { Api } from '../../utils/api';
-import { useNavigate } from 'react-router-dom';
 
-interface IProps {
-}
 // <i className="fa fa-user-circle-o my-icon-user"></i>
-const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
+const PageLogin: FunctionComponent = () => {
+
+ const dispatch = useAppDispatch()
 
  const navigate = useNavigate()
 
@@ -24,33 +23,35 @@ const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
  //const [rememberMe, setRememberMe] = useState(false)
  //const toggleRemember = useCallback(() => setRememberMe(v => !v), [])
 
+ useEffect(() => {
+  const name = globalThis.localStorage.getItem("username") ?? ""
+  if (userName.current && !isEmpty(name)) {
+   userName.current.value = name
+  }
+ }, [])
+
  const login = useCallback(() => {
   const name = userName?.current?.value ?? ""
   const mdp = pass?.current?.value ?? ""
   const rememberMe = remember?.current?.checked
 
   if (!isEmpty(name) && !isEmpty(mdp)) {
-   console.log({ name, mdp, rememberMe })
+
    if (rememberMe && name) {
-    // on garde en memoire le dernier utilisateur connecte
-    console.log("save user")
+    globalThis.localStorage.setItem("username", name)
    }
 
    Api.login(name, mdp).then(r => {
-    console.log(r)
-    switch (r.status) {
-     case 200: {
-      console.log("login ok ", r)
-      // modifier authSlice 
-      navigate("/user")
-      break;
-     }
-
-     default: {
-      console.error(r.message)
-      break;
-     }
+    if (r.status === 200) {
+     console.log("login ok ", r)
+     dispatch(setToken({ token: (r as ILoginResponseOk).body.token }))
+     navigate("/user")
     }
+    else {
+     // TODO : gestion du message d erreur
+     console.error(r.message)
+    }
+
    })
   }
  }, [])
@@ -66,7 +67,7 @@ const PageLogin: FunctionComponent<IProps> = (props: IProps) => {
     <div className="login-input-section">
      <label htmlFor="user-name">
       Username
-      <input type="text" name="user-name" id="user-name" className="login-input full-width" ref={userName} />
+      <input type="email" name="user-name" id="user-name" className="login-input full-width" ref={userName} />
      </label>
     </div>
 

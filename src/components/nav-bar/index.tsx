@@ -1,18 +1,23 @@
-import { FunctionComponent, useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { FunctionComponent, useCallback, useMemo } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 //
-import { RootState } from '../../utils/store';
 import { isEmpty } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { logOut, selectCurrentUser } from '../../utils/reducers/authSlice';
 //
 import LogoUser from "../../assets/user.svg"
 import "./index.css"
 
-interface IProps {
-}
+const NavBarComponent: FunctionComponent = () => {
 
-const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
- const user = useSelector((state: RootState) => state.auth.user)
+ const navigate = useNavigate()
+ const dispatch = useAppDispatch()
+ const user = useAppSelector(selectCurrentUser)
+
+ const logout = useCallback(() => {
+  dispatch(logOut())
+  navigate("/login")
+ }, [])
 
  const NavBarDynamique = useMemo(() => {
   if (isEmpty(user)) {
@@ -40,7 +45,7 @@ const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
      </NavLink>
     </li>
     <li>
-     <NavLink to={'/'} className="sign-in">
+     <NavLink to={'/login'} className="sign-in" onClick={logout}>
       <span>
        <i className="fa fa-sign-out" style={{ color: "#000" }} aria-hidden="true"></i>
       </span>
@@ -50,9 +55,8 @@ const NavBarComponent: FunctionComponent<IProps> = (props: IProps) => {
      </NavLink>
     </li>
    </>
-
   )
- }, [user, user?.firstName, user?.lastName])
+ }, [user, user?.firstName])
 
  return (<nav>
   <ul className="app-nav-bar">

@@ -11,6 +11,7 @@ import { PageNotFound } from "./pages/not-found";
 import { PageHome } from "./pages/home";
 import { PageLogin } from "./pages/login";
 import { PageUser } from "./pages/user";
+import { AuthRouteComponent } from "./components/auth-route";
 
 const router = createBrowserRouter([
  {
@@ -28,7 +29,9 @@ const router = createBrowserRouter([
    },
    {
     path: "/user",
-    element: <PageUser />
+    element: <AuthRouteComponent redirect={"/login"}>
+     <PageUser />
+    </AuthRouteComponent>
    },
    {
     path: "/404",
