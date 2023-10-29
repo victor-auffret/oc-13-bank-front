@@ -7,8 +7,8 @@ export interface IUser {
  email: string,
  firstName: string,
  lastName: string,
- createdAt: Date | string,
- updatedAt: Date | string,
+ createdAt: string | Date,
+ updatedAt: string | Date,
  id: string
 }
 

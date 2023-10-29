@@ -2,7 +2,7 @@ import { myFetch } from "./ajax"
 import { IUser } from "./reducers/authSlice"
 
 export interface IErrorMsg {
- status: 400 | 401 | number
+ status: 400 | 401 | 500 | number
  message: string
 }
 
@@ -20,10 +20,17 @@ export interface IGetUserResponseOk {
  body: IUser
 }
 
+export interface ISetUserResponseOk {
+ status: 200,
+ message: "Successfully updated user profile data",
+ body: IUser
+}
+
 export type LoginResponse = ILoginResponseOk | IErrorMsg
 //type RegisterResponse = IUser | IErrorMsg
 type GetUserResponse = IGetUserResponseOk | IErrorMsg
-//type SetUserResponse = IUser | IErrorMsg
+
+type SetUserResponse = ISetUserResponseOk | IErrorMsg
 
 const baseUrl = "http://localhost:3001"
 const apiVersion = "/api/v1/user"
@@ -48,17 +55,23 @@ class Api {
   })
  }
 
+ static async setUserInfos(token: string, firstName: string, lastName: string): Promise<SetUserResponse> {
+  const url = `${completeUrl}/profile`
+  return await myFetch(url, "put", {
+   firstName,
+   lastName
+  }, token).then(r => r.json()).catch(e => {
+   return { msg: e ?? "erreur de recuperation de donnees de user" }
+  })
+ }
+
  /*
  static async register(email: string, firstName: string, password: string): Promise<RegisterResponse> {
   return { msg: "impossible de creer un compte" }
  }
 
- static async getUserInfos(token: string): Promise<GetUserResponse> {
-  return { msg: "impossible de trouver les infos du compte" }
- }
-
- static async setUserInfos(token: string, firstName: string, lastName: string): Promise<SetUserResponse> {
-  return { msg: "impossible de modifier le profil" }
+ static async getDetailTransaction() {
+  return {  }
  }
  */
 

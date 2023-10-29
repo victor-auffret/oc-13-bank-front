@@ -1,5 +1,6 @@
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { TransactionComponent } from '../../components/transaction';
+import { FormUserComponent } from '../../components/form-user'
 //
 import { isEmpty } from '../../utils';
 import { Api, IGetUserResponseOk } from '../../utils/api';
@@ -15,6 +16,14 @@ const PageUser: FunctionComponent = () => {
  const dispatch = useAppDispatch()
  const user = useAppSelector(selectCurrentUser)
 
+ const [modaleIsOpen, setModaleIsOpen] = useState(false)
+
+ const closeModale = () => setModaleIsOpen(false)
+
+ const openModale = useCallback(() => {
+  setModaleIsOpen(true)
+ }, [])
+
  useEffect(() => {
   if (!isEmpty(token)) {
    console.log("token : ", token)
@@ -27,7 +36,6 @@ const PageUser: FunctionComponent = () => {
   }
  }, [])
 
-
  return <div className="full-height fond-bleu page-user-container">
 
   <header className="page-user-header">
@@ -35,7 +43,11 @@ const PageUser: FunctionComponent = () => {
     Whelcome back <br /> {user?.firstName ?? "Tony"} {user?.lastName ?? "Jarvis"} !
    </h2>
    <br />
-   <button className="btn bg-green">Edit name</button>
+   {
+    modaleIsOpen ?
+     (<FormUserComponent closeModale={closeModale} />) :
+     (<button className="btn bg-green" onClick={openModale}>Edit name</button>)
+   }
   </header>
 
   <section className="transactions-container">
