@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback, useEffect, useRef } from 'react';
+import { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
 //
 import { isEmpty } from '../../utils';
 import { Api, ILoginResponseOk } from '../../utils/api';
@@ -20,6 +20,8 @@ const PageLogin: FunctionComponent = () => {
  const pass = useRef<HTMLInputElement>(null)
  const remember = useRef<HTMLInputElement>(null)
 
+ const [error, setError] = useState("")
+
  //const [rememberMe, setRememberMe] = useState(false)
  //const toggleRemember = useCallback(() => setRememberMe(v => !v), [])
 
@@ -34,7 +36,7 @@ const PageLogin: FunctionComponent = () => {
   const name = userName?.current?.value ?? ""
   const mdp = pass?.current?.value ?? ""
   const rememberMe = remember?.current?.checked
-
+  setError("")
   if (!isEmpty(name) && !isEmpty(mdp)) {
 
    if (rememberMe && name) {
@@ -49,10 +51,12 @@ const PageLogin: FunctionComponent = () => {
     }
     else {
      // TODO : gestion du message d erreur
-     console.error(r.message)
+     setError(r.message)
     }
 
    })
+  } else {
+   setError("Vous devez remplir tout les champs")
   }
  }, [])
 
@@ -62,6 +66,9 @@ const PageLogin: FunctionComponent = () => {
    <img src={LogoUser} alt="icon-user" className="my-icon-user" />
 
    <h1 className="login-title">Sign In</h1>
+
+   {error.length > 0 ? <div className="msg-error" onClick={() => setError("")}> {error} </div> : null}
+
    <form action="#" className="login-form">
 
     <div className="login-input-section">

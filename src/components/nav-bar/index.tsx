@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { logOut, selectCurrentUser } from '../../utils/reducers/authSlice';
 //
 import LogoUser from "../../assets/user.svg"
+import LogoLogout from "../../assets/logout.svg"
 import "./index.css"
 
 const NavBarComponent: FunctionComponent = () => {
@@ -47,7 +48,7 @@ const NavBarComponent: FunctionComponent = () => {
     <li>
      <NavLink to={'/login'} className="sign-in" onClick={logout}>
       <span>
-       <i className="fa fa-sign-out" style={{ color: "#000" }} aria-hidden="true"></i>
+       <img src={LogoLogout} alt="sign-out" className="my-icon-user" />
       </span>
       <span>
        Sign Out

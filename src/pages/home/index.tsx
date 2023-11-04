@@ -1,8 +1,6 @@
 import { FunctionComponent } from 'react';
 import { CardComponent } from "../../components/card-component"
 
-
-
 import "./index.css";
 
 interface IProps {

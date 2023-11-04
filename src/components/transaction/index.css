@@ -14,7 +14,32 @@
 	text-align: left;
 }
 
+.info-transaction {
+	font-size: 1rem;
+	font-weight: normal;
+}
+
 .sold {
 	font-size: 2.5rem;
 	font-weight: bold;
+}
+
+@media screen and (max-width: 720px) {
+	.transaction-container {
+		flex-direction: column;
+		margin-bottom: 30px;
+		min-width: auto;
+	}
+
+	.transaction-btn-container,
+	.btn {
+		width: 100%;
+		margin-right: 10px;
+		padding-right: 10px;
+	}
+
+	.transaction-infos {
+		width: 100%;
+		margin-bottom: 10px;
+	}
 }

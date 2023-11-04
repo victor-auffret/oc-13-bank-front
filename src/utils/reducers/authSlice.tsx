@@ -7,8 +7,8 @@ export interface IUser {
  email: string,
  firstName: string,
  lastName: string,
- createdAt: string | Date,
- updatedAt: string | Date,
+ createdAt: string,
+ updatedAt: string,
  id: string
 }
 
@@ -42,8 +42,8 @@ const authSlice = createSlice({
      email: action.payload.email,
      firstName: action.payload.firstName,
      lastName: action.payload.lastName,
-     createdAt: new Date(action.payload.createdAt),
-     updatedAt: new Date(action.payload.updatedAt),
+     createdAt: action.payload.createdAt,
+     updatedAt: action.payload.updatedAt,
      id: action.payload.id,
     }
    }

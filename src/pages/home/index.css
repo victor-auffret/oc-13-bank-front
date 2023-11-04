@@ -29,3 +29,21 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 }
+
+@media screen and (max-width: 920px) {
+	.slogan {
+		top: 50px;
+		right: calc(50vw - 180px);
+	}
+
+	.slogan,
+	.subtitle {
+		font-size: 1rem;
+	}
+
+	.list-rond-vert {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+	}
+}
